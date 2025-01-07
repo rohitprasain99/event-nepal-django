@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse,JsonResponse
+import json
 # from django.views.decorators.http import require_http_methods, require_GET, require_POST
 
 # Create your views here.
@@ -22,7 +23,14 @@ def index(request):
 
 def create(request):
     if request.method == 'POST':
-        return HttpResponse("event created successfully")
+        print(request.body)
+        # Decode and parse the incoming JSON data
+        data = json.loads(request.body.decode('utf-8'))
+
+        events.append(data)
+        id = data.get('id')
+        title = data.get('title')
+        return HttpResponse(f"event created successfully {id}", status=200)
 
 def getById(request, id):
     if request.method == 'GET':
